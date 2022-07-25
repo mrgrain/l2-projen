@@ -1,12 +1,9 @@
-import { typescript } from 'projen';
-const project = new typescript.TypeScriptProject({
-  defaultReleaseBranch: 'main',
-  name: 'l2-projen',
-  projenrcTs: true,
+import { L2ConstructProject } from './projenrc/L2ConstructProject';
+// import * as meta from './projenrc/meta/';
 
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
+const project = new L2ConstructProject({
+  moduleName: 'aws-kinesis',
 });
 project.synth();
+// project.addImplementation(new meta.StreamImplementation());
+// project.addImplementation(new meta.StreamConsumerImplementation());

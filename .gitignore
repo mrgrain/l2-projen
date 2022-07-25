@@ -48,3 +48,6 @@ junit.xml
 /lib
 /dist/
 !/.eslintrc.json
+!/projenrc/meta/index.ts
+!/projenrc/meta/StreamImplementation.ts
+!/projenrc/meta/StreamConsumerImplementation.ts

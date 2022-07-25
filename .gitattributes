@@ -17,6 +17,9 @@
 /.projen/tasks.json linguist-generated
 /LICENSE linguist-generated
 /package.json linguist-generated
+/projenrc/meta/index.ts linguist-generated
+/projenrc/meta/StreamConsumerImplementation.ts linguist-generated
+/projenrc/meta/StreamImplementation.ts linguist-generated
 /tsconfig.dev.json linguist-generated
 /tsconfig.json linguist-generated
 /yarn.lock linguist-generated
