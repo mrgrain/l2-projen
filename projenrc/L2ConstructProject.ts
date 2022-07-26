@@ -3,6 +3,7 @@ import * as cdk from 'aws-cdk-lib';
 import { TextFile } from 'projen';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { StructureKind } from 'ts-morph';
+import { FixedCannedMetrics, MetricData } from './FixedCannedMetrics';
 import { IImplementation } from './Implementation';
 import { L2Gen } from './L2Gen';
 import { TSSourceCode } from './TSSourceCode';
@@ -13,9 +14,10 @@ export interface L2ConstructProjectOptions extends Omit<TypeScriptProjectOptions
   scope: string;
   defaultReleaseBranch?: string;
 }
-
-
 export class L2ConstructProject extends TypeScriptProject {
+  protected fixedCannedMetrics?: FixedCannedMetrics;
+  public readonly shortName: string;
+
   public constructor(options: L2ConstructProjectOptions) {
     super({
       name: '@aws-cdk/' + options.moduleName,
@@ -26,12 +28,15 @@ export class L2ConstructProject extends TypeScriptProject {
       ...options,
       devDeps: (options.devDeps ?? []).concat(
         'aws-cdk-lib',
+        'case',
         'constructs@^10',
         'ts-morph',
         '@aws-cdk/cfn2ts@link:~/.config/yarn/link/@aws-cdk/cfn2ts',
         '@aws-cdk/cfnspec@link:~/.config/yarn/link/@aws-cdk/cfnspec',
       ),
     });
+
+    this.shortName = options.moduleName.substring(4);
 
     const { l1Generated, l2Generated, cannedMetricsGenerated } = new L2Gen(this, {
       moduleName: options.moduleName,
@@ -108,5 +113,13 @@ export class L2ConstructProject extends TypeScriptProject {
 
   public addImplementation(implementation: IImplementation) {
     console.log(implementation.resourceName);
+  }
+
+  public addMetric(metric: MetricData) {
+    if (!this.fixedCannedMetrics) {
+      this.fixedCannedMetrics = new FixedCannedMetrics(this);
+    }
+
+    this.fixedCannedMetrics.addMetric(metric);
   }
 }

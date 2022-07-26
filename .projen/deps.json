@@ -38,6 +38,10 @@
       "type": "build"
     },
     {
+      "name": "case",
+      "type": "build"
+    },
+    {
       "name": "constructs",
       "version": "^10",
       "type": "build"

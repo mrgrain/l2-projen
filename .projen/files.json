@@ -15,6 +15,7 @@
     ".projen/tasks.json",
     "lib",
     "lib/index.ts",
+    "lib/kinesis-fixed-canned-metrics.ts",
     "LICENSE",
     "projenrc/meta/StreamConsumerImplementation.ts",
     "projenrc/meta/StreamImplementation.ts",

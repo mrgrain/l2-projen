@@ -9,4 +9,13 @@ const project = new L2ConstructProject({
 
 project.defaultTask?.reset('ts-node --swc --project tsconfig.dev.json .projenrc.ts');
 
+
+project.addMetric({
+  name: 'getRecordsBytesAverage',
+  namespace: 'AWS/Kinesis',
+  metricName: 'GetRecords.Bytes',
+  statistic: 'Average',
+  dimensionsType: '{ StreamName: string }',
+});
+
 project.synth();

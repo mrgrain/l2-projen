@@ -17,6 +17,7 @@
 /.projen/tasks.json linguist-generated
 /lib linguist-generated
 /lib/index.ts linguist-generated
+/lib/kinesis-fixed-canned-metrics.ts linguist-generated
 /LICENSE linguist-generated
 /package.json linguist-generated
 /projenrc/meta/StreamConsumerImplementation.ts linguist-generated

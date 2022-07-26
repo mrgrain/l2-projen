@@ -52,3 +52,4 @@ junit.xml
 !/lib/index.ts
 !/projenrc/meta/StreamImplementation.ts
 !/projenrc/meta/StreamConsumerImplementation.ts
+!/lib/kinesis-fixed-canned-metrics.ts
