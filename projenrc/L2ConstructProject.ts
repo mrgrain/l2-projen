@@ -3,11 +3,13 @@ import { TextFile } from 'projen';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { StructureKind } from 'ts-morph';
 import { IImplementation } from './Implementation';
+import { L2Gen } from './L2Gen';
 import { TSSourceCode } from './TSSourceCode';
 
 
 export interface L2ConstructProjectOptions extends Omit<TypeScriptProjectOptions, 'name' | 'defaultReleaseBranch'> {
   moduleName: string;
+  scope: string;
   defaultReleaseBranch?: string;
 }
 
@@ -20,6 +22,12 @@ export class L2ConstructProject extends TypeScriptProject {
       projenrcTs: true,
       ...options,
       devDeps: (options.devDeps ?? []).concat('aws-cdk-lib', 'constructs@^10', 'ts-morph'),
+    });
+
+    new L2Gen(this, {
+      moduleName: options.moduleName,
+      scope: options.scope,
+      outdir: 'gen',
     });
 
     const cfnResources = Object.keys(cdk[options.moduleName.replace('-', '_') as keyof typeof cdk])
@@ -53,8 +61,8 @@ export class L2ConstructProject extends TypeScriptProject {
           extends: ['BaseImplementationOptions'],
           isExported: true,
           properties: [{
-            name: 'defaults',
-            type: '{[key in keyof source.CfnStreamProps]: any}',
+            name: 'props',
+            type: `{[key in keyof source.${resource}Props]: any}`,
           }],
         },
         {

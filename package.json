@@ -22,6 +22,8 @@
     "projen": "npx projen"
   },
   "devDependencies": {
+    "@aws-cdk/cfn2ts": "link:~/.config/yarn/link/@aws-cdk/cfn2ts",
+    "@aws-cdk/cfnspec": "link:~/.config/yarn/link/@aws-cdk/cfnspec",
     "@swc/core": "^1.2.218",
     "@types/jest": "^28.1.6",
     "@types/node": "^14",

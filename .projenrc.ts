@@ -1,15 +1,16 @@
 import { L2ConstructProject } from './projenrc/L2ConstructProject';
-import * as meta from './projenrc/meta/';
+
 
 const project = new L2ConstructProject({
   moduleName: 'aws-kinesis',
-  devDeps: ['@swc/core'],
+  scope: 'AWS::Kinesis',
+  devDeps: [
+    '@swc/core',
+    '@aws-cdk/cfn2ts@link:~/.config/yarn/link/@aws-cdk/cfn2ts',
+    '@aws-cdk/cfnspec@link:~/.config/yarn/link/@aws-cdk/cfnspec',
+  ],
 });
 
 project.defaultTask?.reset('ts-node --swc --project tsconfig.dev.json .projenrc.ts');
 
 project.synth();
-project.addImplementation(new meta.StreamImplementation({
-  defaults: {
-  },
-}));

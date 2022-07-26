@@ -10,6 +10,14 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
+"@aws-cdk/cfn2ts@link:~/.config/yarn/link/@aws-cdk/cfn2ts":
+  version "0.0.0"
+  uid ""
+
+"@aws-cdk/cfnspec@link:~/.config/yarn/link/@aws-cdk/cfnspec":
+  version "0.0.0"
+  uid ""
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.18.6":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.18.6.tgz#3b25d38c89600baa2dcc219edfa88a74eb2c427a"

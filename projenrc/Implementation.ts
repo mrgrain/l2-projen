@@ -1,5 +1,5 @@
 export interface BaseImplementationOptions {
-  defaults: {[key in string]: any};
+  props: {[key in string]: any};
 }
 
 export interface IImplementation {

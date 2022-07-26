@@ -1,6 +1,16 @@
 {
   "dependencies": [
     {
+      "name": "@aws-cdk/cfn2ts",
+      "version": "link:~/.config/yarn/link/@aws-cdk/cfn2ts",
+      "type": "build"
+    },
+    {
+      "name": "@aws-cdk/cfnspec",
+      "version": "link:~/.config/yarn/link/@aws-cdk/cfnspec",
+      "type": "build"
+    },
+    {
       "name": "@swc/core",
       "type": "build"
     },
