@@ -36,6 +36,11 @@ export class L2ConstructProject extends TypeScriptProject {
         kind: StructureKind.SourceFile,
         statements: [{
           kind: StructureKind.ImportDeclaration,
+          namespaceImport: 'source',
+          moduleSpecifier: `aws-cdk-lib/${options.moduleName}`,
+        },
+        {
+          kind: StructureKind.ImportDeclaration,
           namedImports: [
             { name: 'BaseImplementation' },
             { name: 'BaseImplementationOptions' },
@@ -46,6 +51,11 @@ export class L2ConstructProject extends TypeScriptProject {
           kind: StructureKind.Interface,
           name: optionsName,
           extends: ['BaseImplementationOptions'],
+          isExported: true,
+          properties: [{
+            name: 'defaults',
+            type: '{[key in keyof source.CfnStreamProps]: any}',
+          }],
         },
         {
           kind: StructureKind.Class,

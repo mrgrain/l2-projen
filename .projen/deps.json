@@ -1,6 +1,10 @@
 {
   "dependencies": [
     {
+      "name": "@swc/core",
+      "type": "build"
+    },
+    {
       "name": "@types/jest",
       "type": "build"
     },

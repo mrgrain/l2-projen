@@ -1,6 +1,8 @@
+import * as source from 'aws-cdk-lib/aws-kinesis';
 import { BaseImplementation, BaseImplementationOptions } from '../Implementation';
 
-interface StreamImplementationOptions extends BaseImplementationOptions {
+export interface StreamImplementationOptions extends BaseImplementationOptions {
+  defaults: {[key in keyof source.CfnStreamProps]: any};
 }
 
 export class StreamImplementation extends BaseImplementation {
