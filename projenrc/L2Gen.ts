@@ -3,7 +3,7 @@ import { AugmentationGenerator } from '@aws-cdk/cfn2ts/lib/augmentation-generato
 import { CannedMetricsGenerator } from '@aws-cdk/cfn2ts/lib/canned-metrics-generator';
 import CodeGenerator from '@aws-cdk/cfn2ts/lib/codegen';
 import * as cfnSpec from '@aws-cdk/cfnspec';
-import { Component, Project } from 'projen';
+import { Component, FileBase, IResolver, Project } from 'projen';
 
 export interface L2BaseOptions {
   moduleName: string;
@@ -11,21 +11,27 @@ export interface L2BaseOptions {
   outdir?: string;
 }
 
-export class L2Gen extends Component {
+export class L2Gen extends FileBase {
   public readonly outdir: string;
-  protected gen: CodeGenerator;
+  protected genl1: CodeGenerator;
+  protected genl2: CodeGenerator;
   protected augs: AugmentationGenerator;
   protected canned: CannedMetricsGenerator;
 
   public constructor(project: Project, { moduleName, scope, outdir = 'gen' }: L2BaseOptions) {
-    super(project);
+    super(project, outdir);
     this.outdir = outdir;
 
     const spec = cfnSpec.filteredSpecification(s => s.startsWith(`${scope}::`));
     const affix = '';
     const name = moduleName.substring(4);
 
-    this.gen = new CodeGenerator(name, spec, affix, {
+    this.genl1 = new CodeGenerator(name, spec, affix, {
+      level: 1,
+      resourceProviderSchema: cfnSpec.kinesisStreamResourceProviderSchema(),
+    });
+
+    this.genl2 = new CodeGenerator(name, spec, affix, {
       level: 2,
       resourceProviderSchema: cfnSpec.kinesisStreamResourceProviderSchema(),
     });
@@ -37,9 +43,16 @@ export class L2Gen extends Component {
 
   }
 
+  protected synthesizeContent(_resolver: IResolver): string | undefined {
+    throw new Error('Method not implemented.');
+  }
+
   public async synthesize() {
-    this.gen.emitCode();
-    await this.gen.save(this.outdir);
+    this.genl1.emitCode();
+    await this.genl1.save(this.outdir);
+
+    this.genl2.emitCode();
+    await this.genl2.save(this.outdir);
 
     if (this.augs.emitCode()) {
       await this.augs.save(this.outdir);
