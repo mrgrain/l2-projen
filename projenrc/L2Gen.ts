@@ -1,4 +1,5 @@
 
+import { join } from 'path';
 import { AugmentationGenerator } from '@aws-cdk/cfn2ts/lib/augmentation-generator';
 import { CannedMetricsGenerator } from '@aws-cdk/cfn2ts/lib/canned-metrics-generator';
 import CodeGenerator from '@aws-cdk/cfn2ts/lib/codegen';
@@ -13,6 +14,11 @@ export interface L2BaseOptions {
 
 export class L2Gen extends FileBase {
   public readonly outdir: string;
+
+  public readonly l1Generated: string;
+  public readonly l2Generated: string;
+  public readonly cannedMetricsGenerated: string;
+
   protected genl1: CodeGenerator;
   protected genl2: CodeGenerator;
   protected augs: AugmentationGenerator;
@@ -26,21 +32,23 @@ export class L2Gen extends FileBase {
     const affix = '';
     const name = moduleName.substring(4);
 
+    this.l1Generated = join(outdir, `${name}.generated.ts`);
     this.genl1 = new CodeGenerator(name, spec, affix, {
       level: 1,
       resourceProviderSchema: cfnSpec.kinesisStreamResourceProviderSchema(),
     });
 
+    this.l2Generated = join(outdir, `${name}.l2.generated.ts`);
     this.genl2 = new CodeGenerator(name, spec, affix, {
       level: 2,
       resourceProviderSchema: cfnSpec.kinesisStreamResourceProviderSchema(),
     });
 
+
     this.augs = new AugmentationGenerator(name, spec, affix);
 
-
+    this.cannedMetricsGenerated = join(outdir, `${name}-canned-metrics.generated.ts`);
     this.canned = new CannedMetricsGenerator(name, scope);
-
   }
 
   protected synthesizeContent(_resolver: IResolver): string | undefined {

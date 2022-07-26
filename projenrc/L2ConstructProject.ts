@@ -30,10 +30,10 @@ export class L2ConstructProject extends TypeScriptProject {
       ),
     });
 
-    new L2Gen(this, {
+    const { l1Generated, l2Generated, cannedMetricsGenerated } = new L2Gen(this, {
       moduleName: options.moduleName,
       scope: options.scope,
-      outdir: 'gen',
+      outdir: 'module',
     });
 
     const cfnResources = Object.keys(cdk[options.moduleName.replace('-', '_') as keyof typeof cdk])

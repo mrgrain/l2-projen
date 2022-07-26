@@ -15,8 +15,8 @@
 /.projen/deps.json linguist-generated
 /.projen/files.json linguist-generated
 /.projen/tasks.json linguist-generated
-/gen linguist-generated
 /LICENSE linguist-generated
+/module linguist-generated
 /package.json linguist-generated
 /projenrc/meta/index.ts linguist-generated
 /projenrc/meta/StreamConsumerImplementation.ts linguist-generated
