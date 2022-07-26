@@ -21,7 +21,13 @@ export class L2ConstructProject extends TypeScriptProject {
       defaultReleaseBranch: 'main',
       projenrcTs: true,
       ...options,
-      devDeps: (options.devDeps ?? []).concat('aws-cdk-lib', 'constructs@^10', 'ts-morph'),
+      devDeps: (options.devDeps ?? []).concat(
+        'aws-cdk-lib',
+        'constructs@^10',
+        'ts-morph',
+        '@aws-cdk/cfn2ts@link:~/.config/yarn/link/@aws-cdk/cfn2ts',
+        '@aws-cdk/cfnspec@link:~/.config/yarn/link/@aws-cdk/cfnspec',
+      ),
     });
 
     new L2Gen(this, {
