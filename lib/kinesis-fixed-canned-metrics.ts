@@ -15,4 +15,11 @@ export class KinesisMetrics {
       statistic: 'Average',
     };
   }
+
+  public static incomingBytesAverage(dimensions: { StreamName: string }) {
+    return {
+      ...CannedMetrics.incomingBytesSum(dimensions),
+      statistic: 'Average',
+    };
+  }
 }

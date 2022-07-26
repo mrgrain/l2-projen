@@ -7,15 +7,17 @@ const project = new L2ConstructProject({
   devDeps: ['@swc/core'],
 });
 
+
+project.fixMetrics('{ StreamName: string }')
+  .addMetric('getRecordsBytesAverage', {
+    metricName: 'GetRecords.Bytes',
+    statistic: 'Average',
+  })
+  .addMetric('incomingBytesAverage', {
+    extends: 'incomingBytesSum',
+    statistic: 'Average',
+  });
+
+
 project.defaultTask?.reset('ts-node --swc --project tsconfig.dev.json .projenrc.ts');
-
-
-project.addMetric({
-  name: 'getRecordsBytesAverage',
-  namespace: 'AWS/Kinesis',
-  metricName: 'GetRecords.Bytes',
-  statistic: 'Average',
-  dimensionsType: '{ StreamName: string }',
-});
-
 project.synth();

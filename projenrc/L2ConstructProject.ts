@@ -115,11 +115,13 @@ export class L2ConstructProject extends TypeScriptProject {
     console.log(implementation.resourceName);
   }
 
-  public addMetric(metric: MetricData) {
+  public fixMetrics(defaultDimensionsType: string): FixedCannedMetrics {
     if (!this.fixedCannedMetrics) {
-      this.fixedCannedMetrics = new FixedCannedMetrics(this);
+      this.fixedCannedMetrics = new FixedCannedMetrics(this, {
+        defaultDimensionsType,
+      });
     }
 
-    this.fixedCannedMetrics.addMetric(metric);
+    return this.fixedCannedMetrics;
   }
 }
