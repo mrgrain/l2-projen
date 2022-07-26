@@ -44,11 +44,11 @@ junit.xml
 !/test/
 !/tsconfig.json
 !/tsconfig.dev.json
-!/src/
-/lib
+!/lib/
+/dist
 /dist/
 !/.eslintrc.json
-!/module
-!/projenrc/meta/index.ts
+!/lib
+!/lib/index.ts
 !/projenrc/meta/StreamImplementation.ts
 !/projenrc/meta/StreamConsumerImplementation.ts

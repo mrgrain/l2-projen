@@ -1,3 +1,4 @@
+import { basename, join, relative } from 'path';
 import * as cdk from 'aws-cdk-lib';
 import { TextFile } from 'projen';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
@@ -20,6 +21,8 @@ export class L2ConstructProject extends TypeScriptProject {
       name: '@aws-cdk/' + options.moduleName,
       defaultReleaseBranch: 'main',
       projenrcTs: true,
+      srcdir: 'lib',
+      libdir: 'dist',
       ...options,
       devDeps: (options.devDeps ?? []).concat(
         'aws-cdk-lib',
@@ -33,19 +36,23 @@ export class L2ConstructProject extends TypeScriptProject {
     const { l1Generated, l2Generated, cannedMetricsGenerated } = new L2Gen(this, {
       moduleName: options.moduleName,
       scope: options.scope,
-      outdir: 'module',
+      outdir: this.srcdir,
     });
+
+    const exportFile = new TextFile(this, join(this.srcdir, 'index.ts'), {});
+    exportFile.addLine('');
+    exportFile.addLine(`// ${options.scope} CloudFormation Resources:`);
+    exportFile.addLine(`export * from './${basename(relative(this.srcdir, l1Generated), '.ts')}';`);
 
     const cfnResources = Object.keys(cdk[options.moduleName.replace('-', '_') as keyof typeof cdk])
       .filter(resource => resource.startsWith('Cfn'));
 
-    const exportFile = new TextFile(this, 'projenrc/meta/index.ts', {});
 
     for (const resource of cfnResources) {
       const className = `${resource.substring(3)}Implementation`;
       const optionsName = `${className}Options`;
 
-      exportFile.addLine(`export * from './${className}';`);
+
       new TSSourceCode(this, `projenrc/meta/${className}.ts`, {
         kind: StructureKind.SourceFile,
         statements: [{
