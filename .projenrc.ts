@@ -4,10 +4,9 @@ import { L2ConstructProject } from './projenrc/L2ConstructProject';
 const project = new L2ConstructProject({
   moduleName: 'aws-kinesis',
   scope: 'AWS::Kinesis',
-  devDeps: ['@swc/core'],
+  devDeps: ['@swc/core', 'awslint'],
   release: false,
 });
-
 
 project.fixMetrics('{ StreamName: string }')
   .addMetric('getRecordsBytesAverage', {

@@ -1,13 +1,9 @@
 import { basename, join, relative } from 'path';
-import * as cdk from 'aws-cdk-lib';
 import { TextFile } from 'projen';
-import { ReleaseTrigger } from 'projen/lib/release';
+
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
-import { StructureKind } from 'ts-morph';
-import { FixedCannedMetrics, MetricData } from './FixedCannedMetrics';
-import { IImplementation } from './Implementation';
-import { L2Gen } from './L2Gen';
-import { TSSourceCode } from './TSSourceCode';
+import { Cfn2Ts } from './Cfn2Ts';
+import { FixedCannedMetrics } from './FixedCannedMetrics';
 
 
 export interface L2ConstructProjectOptions extends Omit<TypeScriptProjectOptions, 'name' | 'defaultReleaseBranch'> {
@@ -16,30 +12,40 @@ export interface L2ConstructProjectOptions extends Omit<TypeScriptProjectOptions
   defaultReleaseBranch?: string;
 }
 export class L2ConstructProject extends TypeScriptProject {
-  protected fixedCannedMetrics?: FixedCannedMetrics;
   public readonly shortName: string;
+  public readonly moduleName: string;
+  public readonly scope: string;
+
+  protected fixedCannedMetrics?: FixedCannedMetrics;
 
   public constructor(options: L2ConstructProjectOptions) {
     super({
-      name: '@aws-cdk/' + options.moduleName,
+      name: '@aws-cdk/' + options.moduleName + '-l2',
       defaultReleaseBranch: 'main',
       projenrcTs: true,
       srcdir: 'lib',
       libdir: 'dist',
       ...options,
       devDeps: (options.devDeps ?? []).concat(
-        'aws-cdk-lib',
+        'awslint@0.0.0',
         'case',
         'constructs@^10',
         'ts-morph',
-        '@aws-cdk/cfn2ts@link:~/.config/yarn/link/@aws-cdk/cfn2ts',
-        '@aws-cdk/cfnspec@link:~/.config/yarn/link/@aws-cdk/cfnspec',
+        '@aws-cdk/cfn2ts@0.0.0',
+        '@aws-cdk/cfnspec@0.0.0',
       ),
+      scripts: {
+        buildup: '../../../scripts/buildup',
+      },
+      github: false,
+      eslint: false,
     });
 
     this.shortName = options.moduleName.substring(4);
+    this.moduleName = options.moduleName;
+    this.scope = options.scope;
 
-    const { l1Generated, l2Generated, cannedMetricsGenerated } = new L2Gen(this, {
+    const { l1Generated, l2Generated, cannedMetricsGenerated } = new Cfn2Ts(this, {
       moduleName: options.moduleName,
       scope: options.scope,
       outdir: this.srcdir,
@@ -49,71 +55,6 @@ export class L2ConstructProject extends TypeScriptProject {
     exportFile.addLine('');
     exportFile.addLine(`// ${options.scope} CloudFormation Resources:`);
     exportFile.addLine(`export * from './${basename(relative(this.srcdir, l1Generated), '.ts')}';`);
-
-    const cfnResources = Object.keys(cdk[options.moduleName.replace('-', '_') as keyof typeof cdk])
-      .filter(resource => resource.startsWith('Cfn'));
-
-
-    for (const resource of cfnResources) {
-      const className = `${resource.substring(3)}Implementation`;
-      const optionsName = `${className}Options`;
-
-
-      new TSSourceCode(this, `projenrc/meta/${className}.ts`, {
-        kind: StructureKind.SourceFile,
-        statements: [{
-          kind: StructureKind.ImportDeclaration,
-          namespaceImport: 'source',
-          moduleSpecifier: `aws-cdk-lib/${options.moduleName}`,
-        },
-        {
-          kind: StructureKind.ImportDeclaration,
-          namedImports: [
-            { name: 'BaseImplementation' },
-            { name: 'BaseImplementationOptions' },
-          ],
-          moduleSpecifier: '../Implementation',
-        },
-        {
-          kind: StructureKind.Interface,
-          name: optionsName,
-          extends: ['BaseImplementationOptions'],
-          isExported: true,
-          properties: [{
-            name: 'props',
-            type: `{[key in keyof source.${resource}Props]: any}`,
-          }],
-        },
-        {
-          kind: StructureKind.Class,
-          isAbstract: false,
-          isExported: true,
-          extends: 'BaseImplementation',
-          name: className,
-          ctors: [{
-            kind: StructureKind.Constructor,
-            parameters: [{
-              name: 'options',
-              type: optionsName,
-            }],
-            statements: 'super(options);',
-          }],
-          typeParameters: [],
-          properties: [{
-            name: 'resourceName',
-            initializer: `'${resource}'`,
-            type: 'string',
-            isReadonly: true,
-            isStatic: false,
-          }],
-          methods: [],
-        }],
-      });
-    }
-  }
-
-  public addImplementation(implementation: IImplementation) {
-    console.log(implementation.resourceName);
   }
 
   public fixMetrics(defaultDimensionsType: string): FixedCannedMetrics {

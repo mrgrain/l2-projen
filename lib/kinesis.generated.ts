@@ -1,7 +1,7 @@
 // Copyright 2012-2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // Generated from the AWS CloudFormation Resource Specification
 // See: docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification.html
-// @cfn2ts:meta@ {"generated":"2022-07-27T17:43:38.052Z","fingerprint":"7c+OTKrLrESms4Y6dmaBNVfwFavFLHun0mKuKBfR2a0="}
+// @cfn2ts:meta@ {"generated":"2022-07-27T19:04:02.465Z","fingerprint":"l8hTba0jztx+cZ3+npMe3iKNW4pAB9nSOYYlpsLV/z0="}
 
 /* eslint-disable max-len */ // This is generated code - line lengths are difficult to control
 

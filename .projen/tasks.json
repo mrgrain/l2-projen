@@ -24,6 +24,14 @@
         }
       ]
     },
+    "buildup": {
+      "name": "buildup",
+      "steps": [
+        {
+          "exec": "../../../scripts/buildup"
+        }
+      ]
+    },
     "clobber": {
       "name": "clobber",
       "description": "hard resets to HEAD of origin and cleans the local repo",
@@ -86,15 +94,6 @@
         }
       ]
     },
-    "eslint": {
-      "name": "eslint",
-      "description": "Runs eslint against the codebase",
-      "steps": [
-        {
-          "exec": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern lib test build-tools projenrc .projenrc.ts"
-        }
-      ]
-    },
     "package": {
       "name": "package",
       "description": "Creates the distribution package",
@@ -125,9 +124,6 @@
       "steps": [
         {
           "exec": "jest --passWithNoTests --all --updateSnapshot"
-        },
-        {
-          "spawn": "eslint"
         }
       ]
     },
@@ -160,19 +156,19 @@
           "exec": "yarn upgrade npm-check-updates"
         },
         {
-          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec'"
+          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec,awslint'"
         },
         {
-          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec'"
+          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec,awslint'"
         },
         {
-          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec'"
+          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec,awslint'"
         },
         {
-          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec'"
+          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec,awslint'"
         },
         {
-          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec'"
+          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@aws-cdk/cfn2ts,@aws-cdk/cfnspec,awslint'"
         },
         {
           "exec": "yarn install --check-files"

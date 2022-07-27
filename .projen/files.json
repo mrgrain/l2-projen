@@ -1,13 +1,7 @@
 {
   "files": [
-    ".eslintrc.json",
     ".gitattributes",
-    ".github/pull_request_template.md",
-    ".github/workflows/build.yml",
-    ".github/workflows/pull-request-lint.yml",
-    ".github/workflows/upgrade.yml",
     ".gitignore",
-    ".mergify.yml",
     ".npmignore",
     ".projen/deps.json",
     ".projen/files.json",
@@ -16,8 +10,6 @@
     "lib/index.ts",
     "lib/kinesis-fixed-canned-metrics.ts",
     "LICENSE",
-    "projenrc/meta/StreamConsumerImplementation.ts",
-    "projenrc/meta/StreamImplementation.ts",
     "tsconfig.dev.json",
     "tsconfig.json"
   ],

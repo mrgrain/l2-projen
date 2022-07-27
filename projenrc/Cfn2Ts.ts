@@ -4,15 +4,15 @@ import { AugmentationGenerator } from '@aws-cdk/cfn2ts/lib/augmentation-generato
 import { CannedMetricsGenerator } from '@aws-cdk/cfn2ts/lib/canned-metrics-generator';
 import CodeGenerator from '@aws-cdk/cfn2ts/lib/codegen';
 import * as cfnSpec from '@aws-cdk/cfnspec';
-import { Component, FileBase, IResolver, Project } from 'projen';
+import { FileBase, IResolver, Project } from 'projen';
 
-export interface L2BaseOptions {
+export interface Cfn2TsOptions {
   moduleName: string;
   scope: string;
   outdir?: string;
 }
 
-export class L2Gen extends FileBase {
+export class Cfn2Ts extends FileBase {
   public readonly outdir: string;
 
   public readonly l1Generated: string;
@@ -24,7 +24,7 @@ export class L2Gen extends FileBase {
   protected augs: AugmentationGenerator;
   protected canned: CannedMetricsGenerator;
 
-  public constructor(project: Project, { moduleName, scope, outdir = 'gen' }: L2BaseOptions) {
+  public constructor(project: Project, { moduleName, scope, outdir = 'gen' }: Cfn2TsOptions) {
     super(project, outdir);
     this.outdir = outdir;
 
