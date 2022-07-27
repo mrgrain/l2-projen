@@ -5,6 +5,7 @@ const project = new L2ConstructProject({
   moduleName: 'aws-kinesis',
   scope: 'AWS::Kinesis',
   devDeps: ['@swc/core'],
+  release: false,
 });
 
 

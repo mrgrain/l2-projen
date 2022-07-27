@@ -1,6 +1,7 @@
 import { basename, join, relative } from 'path';
 import * as cdk from 'aws-cdk-lib';
 import { TextFile } from 'projen';
+import { ReleaseTrigger } from 'projen/lib/release';
 import { TypeScriptProject, TypeScriptProjectOptions } from 'projen/lib/typescript';
 import { StructureKind } from 'ts-morph';
 import { FixedCannedMetrics, MetricData } from './FixedCannedMetrics';
